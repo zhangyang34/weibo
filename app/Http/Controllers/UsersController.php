@@ -14,6 +14,10 @@ class UsersController extends Controller
         $this->middleware('auth',[
             'except'=>['show','create','store','index','confirmEmail']
         ]);
+        // 限流 一个小时内只能提交 10 次请求；
+        $this->middleware('throttle:10,60', [
+            'only' => ['store']
+        ]);
     }
 
     //注册

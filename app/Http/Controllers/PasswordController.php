@@ -11,10 +11,20 @@ use Mail;
 use Carbon\Carbon;
 class PasswordController extends Controller
 {
+    //限流
+    public function __construct()
+    {
+        //十分钟只能重置3次
+        $this->middleware('throttle:3,10', [
+            'only' => ['showLinkRequestForm']
+        ]);
+    }
+    //显示忘记密码的页面
     public function showLinkRequestForm()
     {
         return view('auth.passwords.email');
     }
+    //发送邮箱验证
     public function sendResetLinkEmail(Request $request)
     {
         // 1. 验证邮箱
@@ -48,12 +58,13 @@ class PasswordController extends Controller
         session()->flash('success', '重置邮件发送成功，请查收');
         return redirect()->back();
     }
+    //显示重置密码的页面
     public function showResetForm(Request $request)
     {
         $token = $request->route()->parameter('token');
         return view('auth.passwords.reset', compact('token'));
     }
-
+    //重置密码
     public function reset(Request $request)
     {
         // 1. 验证数据是否合规

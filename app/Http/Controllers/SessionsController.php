@@ -17,6 +17,10 @@ class SessionsController extends Controller
         $this->middleware('guest', [
             'only' => ['create']
         ]);
+        //登录限流十分钟只能登录十次
+        $this->middleware('throttle:10,10', [
+            'only' => ['store']
+        ]);
     }
     // 显示登录页面
     public function create(){
