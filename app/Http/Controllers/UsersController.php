@@ -34,5 +34,25 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
+    //修改
+    public function edit(User $user){
+        //compact 相当于assign()
+        return view('users.edit',compact('user'));
+    }
 
+    public function update(User $user,Request $request){
+        //nullable 避免空白密码提交到数据库中 如果提交的密码为空则保持密码不变否则将新密码更新到数据库中
+        $this->validate($request,[
+            'name'=>'required|unique:users|max:50',
+            'password'=>'nullable|confirmed|min:6'
+        ]);
+        $user->update([
+            'name'=>$request->name,
+            'password'=>bcrypt($request->password)
+        ]);
+        session()->flash('success','修改个人资料成功!');
+        return redirect()->route('users.show',$user->id);
+
+
+    }
 }
