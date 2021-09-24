@@ -42,7 +42,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    //根据用户邮箱返回用户的头像信息
     public function gravatar($size='200'){
         /*
          *
