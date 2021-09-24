@@ -1,0 +1,34 @@
+{{--引入公告的部分--}}
+@extends('layouts.default');
+{{--引入标题--}}
+@section('title','登录')
+{{--加入内容--}}
+@section('content')
+  <div class="offset-md-2 col-md-8">
+    <div class="card">
+        <div class="card-header">
+          <h5>登录</h5>
+        </div>
+    </div>
+    <div class="card-body">
+      {{--   报错信息   --}}
+      @include('shared._errors')
+      <form method="post" action="{{ route('login') }}">
+        {{ csrf_field() }}
+        <div class="form-group">
+          <label for="email">邮箱：</label>
+            {{--{{ old('email') }} 记录上次输入的字符--}}
+          <input type="text" name="email" class="form-control" value="{{ old('email') }}">
+        </div>
+        <div class="form-group">
+          <label for="password">密码：</label>
+          <input type="password" name="password" class="form-control" value="{{ old('password') }}">
+        </div>
+
+        <button type="submit" class="btn btn-primary">登录</button>
+      </form>
+      <hr>
+      <p>还没账号？<a href="{{ route('signup') }}">现在注册！</a></p>
+    </div>
+  </div>
+@stop
