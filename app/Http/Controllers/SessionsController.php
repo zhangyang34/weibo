@@ -16,8 +16,8 @@ class SessionsController extends Controller
             'email'=>'required|email|max:255',
             'password'=>'required'
         ]);
-        //使用auth方法判断用户输入的邮箱密码是否和数据库中一致否则报错
-        if(Auth::attempt($dataLogin)){
+        //使用auth方法判断用户输入的邮箱密码是否和数据库中一致否则报错 remember 记住我功能可以延续至5年
+        if(Auth::attempt($dataLogin,$request->has('remember'))){
             session()->flash('success','欢迎回家');
             return redirect()->route('users.show',[Auth::user()]);
         }else{
