@@ -22,6 +22,7 @@ class SessionsController extends Controller
     public function create(){
         return view('sessions.create');
     }
+    //登录验证
     public function store(Request $request){
         $dataLogin = $this->validate($request,[
             'email'=>'required|email|max:255',
@@ -29,9 +30,15 @@ class SessionsController extends Controller
         ]);
         //使用auth方法判断用户输入的邮箱密码是否和数据库中一致否则报错 remember 记住我功能可以延续至5年
         if(Auth::attempt($dataLogin,$request->has('remember'))){
-            session()->flash('success','欢迎回家');
-            $fallback = route('users.show',[Auth::user()]);
-            return redirect()->intended($fallback);
+            if(Auth::user()->activated){
+                session()->flash('success','欢迎回家');
+                $fallback = route('users.show',[Auth::user()]);
+                return redirect()->intended($fallback);
+            }else{
+                Auth::logout();
+                session()->flash('warning','你的账号未激活，请检查邮箱中的注册邮件进行激活。');
+                return redirect('/');
+            }
         }else{
             session()->flash('danger', '很抱歉，您的邮箱和密码不匹配');
             return redirect()->back()->withInput();
