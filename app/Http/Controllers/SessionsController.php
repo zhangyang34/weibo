@@ -28,9 +28,9 @@ class SessionsController extends Controller
 
     }
 
-    public function destory(){
+    public function destroy(){
         //销毁当前用户的登录状态
-        Auth::loginout();
+        Auth::logout();
         session()->flash('success','您已成功退下');
         //返回登录页
         return redirect('login');
