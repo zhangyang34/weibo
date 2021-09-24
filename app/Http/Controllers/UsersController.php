@@ -8,6 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
+    //过滤
+    public function __construct()
+    {
+        $this->middleware('auth',[
+            'except'=>['show','create','store']
+        ]);
+    }
+
     //注册
     public function create(){
         return view('users.create');
@@ -36,11 +44,13 @@ class UsersController extends Controller
 
     //修改
     public function edit(User $user){
+        $this->authorize('update',$user);
         //compact 相当于assign()
         return view('users.edit',compact('user'));
     }
 
     public function update(User $user,Request $request){
+        $this->authorize('update', $user);
         //nullable 避免空白密码提交到数据库中 如果提交的密码为空则保持密码不变否则将新密码更新到数据库中
         $this->validate($request,[
             'name'=>'required|unique:users|max:50',
