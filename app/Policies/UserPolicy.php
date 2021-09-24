@@ -22,4 +22,8 @@ class UserPolicy
         //第一个参数默认为当前登录用户实例第二个参数则为要进行授权的用户实例
         return $currentUser->id===$user->id;
     }
+    public function destroy(User $currentUser, User $user)
+    {
+        return $currentUser->is_admin && $currentUser->id !== $user->id;
+    }
 }
