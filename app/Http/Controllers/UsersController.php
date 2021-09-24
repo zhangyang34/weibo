@@ -62,7 +62,10 @@ class UsersController extends Controller
         ]);
         session()->flash('success','修改个人资料成功!');
         return redirect()->route('users.show',$user->id);
+    }
 
-
+    public function index(){
+        $users = User::paginate(6);
+        return view('users.index',compact('users'));
     }
 }

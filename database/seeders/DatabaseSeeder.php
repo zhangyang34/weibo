@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-
+use Illuminate\Database\Eloquent\Model;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -13,7 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CommentsTableSeeder::class);
+        Model::unguard();
+
+        $this->call(UsersTableSeeder::class); //指定数据填充的文件
+
+        Model::reguard();
         // \App\Models\User::factory(10)->create();
     }
 }
