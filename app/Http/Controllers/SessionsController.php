@@ -16,6 +16,7 @@ class SessionsController extends Controller
             'email'=>'required|email|max:255',
             'password'=>'required'
         ]);
+        //使用auth方法判断用户输入的邮箱密码是否和数据库中一致否则报错
         if(Auth::attempt($dataLogin)){
             session()->flash('success','欢迎回家');
             return redirect()->route('users.show',[Auth::user()]);
@@ -25,5 +26,13 @@ class SessionsController extends Controller
         }
         return;
 
+    }
+
+    public function destory(){
+        //销毁当前用户的登录状态
+        Auth::loginout();
+        session()->flash('success','您已成功退下');
+        //返回登录页
+        return redirect('login');
     }
 }
